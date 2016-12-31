@@ -32,10 +32,27 @@ public class Fractal : MonoBehaviour {
         Quaternion.Euler(180f,0,0f)
     };
 
+    private Material[] materials;
+
+    private void InitializeMaterials()
+    {
+        materials = new Material[maxDepth + 1];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            materials[i] = new Material(material);
+            materials[i].color = Color.Lerp(Color.white, Color.yellow, (float)i / maxDepth);
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
+        if(materials == null)
+        {
+            InitializeMaterials();
+        }
+
         gameObject.AddComponent<MeshFilter>().mesh = mesh;
-        gameObject.AddComponent<MeshRenderer>().material = material;
+        gameObject.AddComponent<MeshRenderer>().material = materials[depth];
         GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);
 
         if ( depth < maxDepth)
@@ -64,7 +81,7 @@ public class Fractal : MonoBehaviour {
     {
         //forwarding everything
         mesh = parent.mesh;
-        material = parent.material;
+        materials = parent.materials;
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
         childScale = parent.childScale;
