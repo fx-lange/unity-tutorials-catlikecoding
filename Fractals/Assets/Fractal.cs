@@ -40,8 +40,12 @@ public class Fractal : MonoBehaviour {
         for (int i = 0; i < materials.Length; i++)
         {
             materials[i] = new Material(material);
-            materials[i].color = Color.Lerp(Color.white, Color.yellow, (float)i / maxDepth);
+
+            float t = (float)i / (maxDepth - 1f);
+            t *= t;
+            materials[i].color = Color.Lerp(Color.white, Color.yellow, t);
         }
+        materials[maxDepth].color = Color.magenta;
     }
 
 	// Use this for initialization
@@ -53,7 +57,8 @@ public class Fractal : MonoBehaviour {
 
         gameObject.AddComponent<MeshFilter>().mesh = mesh;
         gameObject.AddComponent<MeshRenderer>().material = materials[depth];
-        GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);
+        //GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);
+        //this would silently produces duplicates
 
         if ( depth < maxDepth)
         {
