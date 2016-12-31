@@ -70,7 +70,7 @@ public class Fractal : MonoBehaviour {
     {
         for(int i=0; i < childDirections.Length; i++)
         {
-            if(i==6 && depth != 0)
+            if(i==childDirections.Length-1 && depth != 0)
             {
                 continue; //only needed for the first cube
             }
