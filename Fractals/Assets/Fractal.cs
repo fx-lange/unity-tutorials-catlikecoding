@@ -36,6 +36,7 @@ public class Fractal : MonoBehaviour {
 	void Start () {
         gameObject.AddComponent<MeshFilter>().mesh = mesh;
         gameObject.AddComponent<MeshRenderer>().material = material;
+        GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);
 
         if ( depth < maxDepth)
         {
@@ -45,15 +46,15 @@ public class Fractal : MonoBehaviour {
 
     private IEnumerator CreateChildren ()
     {
-        int maxChild = childOrientations.Length;
-        if(depth > 0)
+        for(int i=0; i < childDirections.Length; i++)
         {
-            maxChild -= 1;
-        }
-        for(int i=0; i < maxChild; i++)
-        {
-            yield return new WaitForSeconds(0.5f);
-            new GameObject("Fractal Up").AddComponent<Fractal>()
+            if(i==6 && depth != 0)
+            {
+                continue; //only needed for the first cube
+            }
+            float delay = Random.Range(0.1f, 0.5f);
+            yield return new WaitForSeconds(delay);
+            new GameObject("Fractal Child").AddComponent<Fractal>()
             .Initialize(this, i);
 
         }
