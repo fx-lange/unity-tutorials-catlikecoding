@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class NucleonSpawnerScript: MonoBehaviour {
+
+  
 
     public float timeBetweenSpawns;
 
@@ -14,7 +18,7 @@ public class NucleonSpawnerScript: MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        Application.targetFrameRate = 60;
 	}
 	
 	void FixedUpdate () {
