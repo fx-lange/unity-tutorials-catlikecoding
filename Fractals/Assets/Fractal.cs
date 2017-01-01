@@ -5,13 +5,17 @@ using UnityEngine;
 public class Fractal : MonoBehaviour {
 
     public Mesh[] meshes;
-    public Mesh mesh;
     public Material material;
 
     public int maxDepth;
     private int depth;
 
     public float childScale;
+
+    public float spawnProbability;
+
+    public float maxRotationSpeed;
+    private float rotationSpeed;
 
     private static Vector3[] childDirections =
     {
@@ -67,6 +71,8 @@ public class Fractal : MonoBehaviour {
         {
             StartCoroutine(CreateChildren());
         }
+
+        rotationSpeed = Random.Range(0f, maxRotationSpeed);
 	}
 
     private IEnumerator CreateChildren ()
@@ -74,9 +80,11 @@ public class Fractal : MonoBehaviour {
         for(int i=0; i < childDirections.Length; i++)
         {
             if(i==childDirections.Length-1 && depth != 0)
-            {
                 continue; //only needed for the first cube
-            }
+
+            if (Random.value >= spawnProbability)
+                continue;
+
             float delay = Random.Range(0.1f, 0.5f);
             yield return new WaitForSeconds(delay);
             new GameObject("Fractal Child").AddComponent<Fractal>()
@@ -93,6 +101,8 @@ public class Fractal : MonoBehaviour {
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
         childScale = parent.childScale;
+        spawnProbability = parent.spawnProbability;
+        maxRotationSpeed = parent.maxRotationSpeed;
 
         //parent child relation
         transform.parent = parent.transform;
@@ -106,6 +116,6 @@ public class Fractal : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
 	}
 }
