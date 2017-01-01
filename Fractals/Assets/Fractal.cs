@@ -17,6 +17,8 @@ public class Fractal : MonoBehaviour {
     public float maxRotationSpeed;
     private float rotationSpeed;
 
+    public float maxTwist;
+
     private static Vector3[] childDirections =
     {
         Vector3.up,
@@ -73,6 +75,7 @@ public class Fractal : MonoBehaviour {
         }
 
         rotationSpeed = Random.Range(0f, maxRotationSpeed);
+        transform.Rotate(Random.Range(-maxTwist, maxTwist), 0f, 0f);
 	}
 
     private IEnumerator CreateChildren ()
@@ -103,6 +106,7 @@ public class Fractal : MonoBehaviour {
         childScale = parent.childScale;
         spawnProbability = parent.spawnProbability;
         maxRotationSpeed = parent.maxRotationSpeed;
+        maxTwist = parent.maxTwist;
 
         //parent child relation
         transform.parent = parent.transform;
