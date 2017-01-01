@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Fractal : MonoBehaviour {
 
+    public Mesh[] meshes;
     public Mesh mesh;
     public Material material;
 
@@ -32,20 +33,22 @@ public class Fractal : MonoBehaviour {
         Quaternion.Euler(180f,0,0f)
     };
 
-    private Material[] materials;
+    private Material[,] materials;
 
     private void InitializeMaterials()
     {
-        materials = new Material[maxDepth + 1];
-        for (int i = 0; i < materials.Length; i++)
+        materials = new Material[maxDepth + 1, 2];
+        for (int i = 0; i < materials.GetLength(0); i++)
         {
-            materials[i] = new Material(material);
-
             float t = (float)i / (maxDepth - 1f);
             t *= t;
-            materials[i].color = Color.Lerp(Color.white, Color.yellow, t);
+            materials[i, 0] = new Material(material);
+            materials[i, 0].color = Color.Lerp(Color.white, Color.yellow, t);
+            materials[i, 1] = new Material(material);
+            materials[i, 1].color = Color.Lerp(Color.white, Color.cyan, t);
         }
-        materials[maxDepth].color = Color.magenta;
+        materials[maxDepth, 0].color = Color.magenta;
+        materials[maxDepth, 1].color = Color.red;
     }
 
 	// Use this for initialization
@@ -55,10 +58,10 @@ public class Fractal : MonoBehaviour {
             InitializeMaterials();
         }
 
-        gameObject.AddComponent<MeshFilter>().mesh = mesh;
-        gameObject.AddComponent<MeshRenderer>().material = materials[depth];
-        //GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);
-        //this would silently produces duplicates
+        gameObject.AddComponent<MeshFilter>().mesh = meshes[Random.Range(0,meshes.Length)];
+        gameObject.AddComponent<MeshRenderer>().material = materials[depth,Random.Range(0,2)];
+        //instead of this which whould silently produces duplicates
+        //GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.white, Color.yellow, (float)depth / maxDepth);x
 
         if ( depth < maxDepth)
         {
@@ -85,7 +88,7 @@ public class Fractal : MonoBehaviour {
     private void Initialize(Fractal parent, int childIndex)
     {
         //forwarding everything
-        mesh = parent.mesh;
+        meshes = parent.meshes;
         materials = parent.materials;
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
