@@ -9,10 +9,12 @@ public class StuffSpawner : MonoBehaviour {
     public float timeBetweenSpawns;
     float timeSinceLastSpawn = 0;
 
+    public float velocity;
+
     void FixedUpdate()
     {
         timeSinceLastSpawn += Time.deltaTime;
-        if( timeSinceLastSpawn <= timeBetweenSpawns)
+        if( timeSinceLastSpawn >= timeBetweenSpawns)
         {
             timeSinceLastSpawn -= timeBetweenSpawns;
             SpawnStuff();
@@ -22,7 +24,8 @@ public class StuffSpawner : MonoBehaviour {
     void SpawnStuff()
     {
         Stuff prefab = stuffPrefabs[Random.Range(0, stuffPrefabs.Length)];
-        Stuff spawn = Instantiate<Stuff>(prefab);
-        spawn.transform.localPosition = transform.localPosition;
+        Stuff stuff = Instantiate<Stuff>(prefab);
+        stuff.transform.localPosition = transform.position;
+        stuff.Body.velocity = transform.up * velocity;
     }
 }

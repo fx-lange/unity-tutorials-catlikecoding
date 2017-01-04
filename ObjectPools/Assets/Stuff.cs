@@ -5,10 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Stuff : MonoBehaviour {
 
-    Rigidbody body;
+    public Rigidbody Body { get; private set; }
 
     void Awake()
     {
-        body = GetComponent<Rigidbody>();
+        Body = GetComponent<Rigidbody>();
     }
 }
