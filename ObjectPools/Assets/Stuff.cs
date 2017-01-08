@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class Stuff : MonoBehaviour {
+public class Stuff : PooledObject
+{
 
     public Rigidbody Body { get; private set; }
     MeshRenderer[] meshRenderers;
@@ -26,7 +27,7 @@ public class Stuff : MonoBehaviour {
     {
         if (collider.CompareTag("KillZone"))
         {
-            Destroy(gameObject);
+            ReturnToPool();
         }
     }
 }

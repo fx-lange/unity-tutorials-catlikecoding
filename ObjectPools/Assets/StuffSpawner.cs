@@ -29,7 +29,8 @@ public class StuffSpawner : MonoBehaviour {
     void SpawnStuff()
     {
         Stuff prefab = stuffPrefabs[Random.Range(0, stuffPrefabs.Length)];
-        Stuff stuff = Instantiate<Stuff>(prefab);
+        //Stuff stuff = Instantiate<Stuff>(prefab);
+        Stuff stuff = prefab.Create<Stuff>();
         stuff.transform.localPosition = transform.position;
         stuff.transform.localScale = Vector3.one * scale.RandomInRange;
         stuff.transform.localRotation = Random.rotation;
