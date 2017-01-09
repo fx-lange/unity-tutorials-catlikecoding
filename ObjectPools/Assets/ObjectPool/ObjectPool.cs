@@ -29,7 +29,7 @@ public class ObjectPool : MonoBehaviour
         return pool;
     }
 
-    List<PooledObject> availableObjects = new List<PooledObject>;
+    List<PooledObject> availableObjects = new List<PooledObject>();
 
     public PooledObject GetObject()
     {
